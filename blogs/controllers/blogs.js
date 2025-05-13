@@ -53,7 +53,9 @@ blogsRouter.delete('/:id', async (req, res, next) => {
             return res.status(401).json({error: "User id does not match blog creator's id"});
         }
 
-        await Blog.findByIdAndDelete(id);
+        await blogToDelete.deleteOne()
+        user.blogs = user.blogs.filter(blog => blog._id.toString != blogToDelete._id.toString())
+
         res.status(204).end();
     } catch (error) {
         next(error);
